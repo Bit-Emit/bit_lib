@@ -1,7 +1,8 @@
 const fs = require('fs');
 
 
-execSync(`cordova-res ios && cordova-res android `)
+execSync(`cordova-res ios`)
+execSync(`cordova-res android `)
 
 const SOURCE_IOS_ICON = 'resources/ios/icon/';
 const SOURCE_IOS_SPLASH = 'resources/ios/splash/';
