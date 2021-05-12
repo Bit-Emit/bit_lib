@@ -1,11 +1,10 @@
-
-
 import Axios from 'axios'
-import { authConfig } from './axios_auth/authxios'
 
+import { authConfig } from './authHeader'
 import storage from '../storage/storage'
 
-export default {
+
+export const userModule = {
   namespaced: true,
 
   state: {
@@ -95,8 +94,6 @@ export default {
         throw err
       }
     }
-
-
 
   }
 }
