@@ -4,28 +4,6 @@ import { authConfig } from './authHeader'
 import storage from '../storage/storage'
 
 
-
-let config = {
-
-  urls: {
-    login: '',
-    signup: '',
-    updateProfile: '',
-    authorize: '',
-    loadProfile: ''
-  },
-
-  handleError(err) { 
-    console.error(err)
-    throw err
-  }
-
-}
-
-
-export const setConfig = (newConfig) => config = {...config, ...newConfig}
-
-
 export const userModule = {
   namespaced: true,
 
@@ -34,81 +12,86 @@ export const userModule = {
   },
 
   getters:{
-    token: ({user}): string => user.token,
-    isUserLogedIn:(s, getters): boolean => !!getters.token,
+    token: ({user}) => user.token,
+    isUserLogedIn:(s, getters) => !!getters.token,
     userProfile: ({user}) => user.user,
   },
 
   mutations: {
-    async initData(state: any) {
+    async initData(state) {
       const {value} = await storage.get('user')
       if(!value) {return}
       state.user = JSON.parse(value)
     },
 
-    async authorised(state: any, userData) {
+    async authorised(state, userData) {
       state.user = userData
       await storage.set('user', userData)
     },
 
-    profileLoaded(state: any, newUser) {
+    profileLoaded(state, newUser) {
       state.user.user = newUser
       storage.set('user', state.user)
     },
 
-    authorized(state: any, token: string) {
-      state.user.token = token
+    authorized({user}, token) {
+      user.token = token
     }
   },
 
   actions: {
-    async login({commit}: any, credentials: any) {
+    async login({commit}, credentials) {
       try {
-        const {data} = await Axios.post(config.urls.login, credentials)
+        const {data} = await Axios.post('/api/login', credentials)
         await commit('authorised', data)
       } catch(err) {
-        config.handleError(err)
+        console.error(err)
+        throw err
       }
     },
 
-    async signup({commit}: any, userData: any) {
+    async register({commit}, userData) {
       try {
-        const {data} = await Axios.post(config.urls.signup, userData)
+        const {data} = await Axios.post('/api/signup', userData, {headers: {"Content-Type": "application/json"}})
         await commit('authorised', data)
       } catch(err) {
-        config.handleError(err)
+        console.error(err)
+        throw err
       }
     },
 
-    async updateProfile(store: any, userData: any) {
+    async updateProfile(store, userData) {
       try {
-        const {data} = await Axios.put(config.urls.updateProfile, userData, authConfig())
+        const {data} = await Axios.put('/api/user', userData, authConfig({"Content-Type": "application/json"}))
         await store.commit('profileLoaded', data)
       } catch(err) {
-        config.handleError(err)
+        console.error(err)
+        throw err
       }
     },
 
-    async authorize(store: any) {
+    async authorize(store) {
       try{
-        const {data} = await Axios.post(config.urls.authorize, {token: store.getters['token']})
+        const {data} = await Axios.post('/api/refresh', {token: store.getters['token']})
         store.commot('authorized', data.token)
         return data.token
       } catch(err) {
-        config.handleError(err)
+        console.error(err)
+        throw err
       }
     },
 
-    async logout() { 
-      await storage.remove('user') 
+    async logout({commit}) {
+      await storage.remove('user')
     },
 
-    async loadProfile(store: any) {
+    async loadProfile(store) {
       try{
-        const {data} = await Axios.get(config.urls.loadProfile, authConfig())
+        const {data} = await Axios.get(`/api/user`, authConfig())
         store.commit('profileLoaded', data)
       } catch(err) {
-        config.handleError(err)
+        console.error(err)
+        throw err
       }
     }
 
