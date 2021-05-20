@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@capacitor/core": "3.0.0-rc.3",
+    "@capacitor/cli": "^3.0.0-rc.3",
+    "@capacitor/core": "^3.0.0-rc.3",
     "@types/jest": "^26.0.23",
     "@vue/cli-plugin-unit-jest": "^4.5.12",
     "axios": "^0.21.1",
