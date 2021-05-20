@@ -4,6 +4,28 @@ import { authConfig } from './authHeader'
 import storage from '../storage/storage'
 
 
+
+let config = {
+
+  urls: {
+    login: '',
+    signup: '',
+    updateProfile: '',
+    authorize: '',
+    loadProfile: ''
+  },
+
+  handleError(err) { 
+    console.error(err)
+    throw err
+  }
+
+}
+
+
+export const setConfig = (newConfig) => config = {...config, ...newConfig}
+
+
 export const userModule = {
   namespaced: true,
 
@@ -42,56 +64,51 @@ export const userModule = {
   actions: {
     async login({commit}, credentials) {
       try {
-        const {data} = await Axios.post('/api/login', credentials)
+        const {data} = await Axios.post(config.urls.login, credentials)
         await commit('authorised', data)
       } catch(err) {
-        console.error(err)
-        throw err
+        config.handleError(err)
       }
     },
 
-    async register({commit}, userData) {
+    async signup({commit}, userData) {
       try {
-        const {data} = await Axios.post('/api/signup', userData, {headers: {"Content-Type": "application/json"}})
+        const {data} = await Axios.post(config.urls.signup, userData)
         await commit('authorised', data)
       } catch(err) {
-        console.error(err)
-        throw err
+        config.handleError(err)
       }
     },
 
     async updateProfile(store, userData) {
       try {
-        const {data} = await Axios.put('/api/user', userData, authConfig({"Content-Type": "application/json"}))
+        const {data} = await Axios.put(config.urls.updateProfile, userData, authConfig())
         await store.commit('profileLoaded', data)
       } catch(err) {
-        console.error(err)
-        throw err
+        config.handleError(err)
       }
     },
 
     async authorize(store) {
       try{
-        const {data} = await Axios.post('/api/refresh', {token: store.getters['token']})
+        const {data} = await Axios.post(config.urls.authorize, {token: store.getters['token']})
         store.commot('authorized', data.token)
         return data.token
       } catch(err) {
-        console.error(err)
-        throw err
+        config.handleError(err)
       }
     },
 
-    async logout({commit}) {
-      await storage.remove('user')
+    async logout({commit}) { 
+      await storage.remove('user') 
     },
 
     async loadProfile(store) {
       try{
-        const {data} = await Axios.get(`/api/user`, authConfig())
+        const {data} = await Axios.get(config.urls.loadProfile, authConfig())
         store.commit('profileLoaded', data)
       } catch(err) {
-        console.error(err)
-        throw err
+        config.handleError(err)
       }
     }
 

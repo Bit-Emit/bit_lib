@@ -1,6 +1,6 @@
 
 
-let getToken = () => ''
+let getToken = () => 'DEFAULT_TOKEN'
 
 export const setTokenGetter = (newGetter: () => string) => getToken = newGetter
 
