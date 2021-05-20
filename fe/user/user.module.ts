@@ -34,35 +34,35 @@ export const userModule = {
   },
 
   getters:{
-    token: ({user}) => user.token,
-    isUserLogedIn:(s, getters) => !!getters.token,
+    token: ({user}): string => user.token,
+    isUserLogedIn:(s, getters): boolean => !!getters.token,
     userProfile: ({user}) => user.user,
   },
 
   mutations: {
-    async initData(state) {
+    async initData(state: any) {
       const {value} = await storage.get('user')
       if(!value) {return}
       state.user = JSON.parse(value)
     },
 
-    async authorised(state, userData) {
+    async authorised(state: any, userData) {
       state.user = userData
       await storage.set('user', userData)
     },
 
-    profileLoaded(state, newUser) {
+    profileLoaded(state: any, newUser) {
       state.user.user = newUser
       storage.set('user', state.user)
     },
 
-    authorized({user}, token) {
-      user.token = token
+    authorized(state: any, token: string) {
+      state.user.token = token
     }
   },
 
   actions: {
-    async login({commit}, credentials) {
+    async login({commit}: any, credentials: any) {
       try {
         const {data} = await Axios.post(config.urls.login, credentials)
         await commit('authorised', data)
@@ -71,7 +71,7 @@ export const userModule = {
       }
     },
 
-    async signup({commit}, userData) {
+    async signup({commit}: any, userData: any) {
       try {
         const {data} = await Axios.post(config.urls.signup, userData)
         await commit('authorised', data)
@@ -80,7 +80,7 @@ export const userModule = {
       }
     },
 
-    async updateProfile(store, userData) {
+    async updateProfile(store: any, userData: any) {
       try {
         const {data} = await Axios.put(config.urls.updateProfile, userData, authConfig())
         await store.commit('profileLoaded', data)
@@ -89,7 +89,7 @@ export const userModule = {
       }
     },
 
-    async authorize(store) {
+    async authorize(store: any) {
       try{
         const {data} = await Axios.post(config.urls.authorize, {token: store.getters['token']})
         store.commot('authorized', data.token)
@@ -99,11 +99,11 @@ export const userModule = {
       }
     },
 
-    async logout({commit}) { 
+    async logout() { 
       await storage.remove('user') 
     },
 
-    async loadProfile(store) {
+    async loadProfile(store: any) {
       try{
         const {data} = await Axios.get(config.urls.loadProfile, authConfig())
         store.commit('profileLoaded', data)
