@@ -1,8 +1,7 @@
-import {Plugins} from '@capacitor/core'
-const {Storage:CapS} = Plugins
+import { Storage } from '@capacitor/storage';
 
-export default {
-    set: async(key: string, value: any) => await CapS.set({ key, value: JSON.stringify(value) }),
-    get: async(key: string) => await CapS.get({ key }),
-    remove: async(key: string) => await CapS.remove({key})
+export const storage = {
+  set: (key: string, value: any) => Storage.set({ key, value: JSON.stringify(value) }),
+  get: (key: string) => Storage.get({ key }),
+  remove: (key: string) => Storage.remove({key})
 }
