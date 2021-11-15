@@ -9,34 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@capacitor/cli": "^3.0.0-rc.3",
-    "@capacitor/core": "^3.0.0-rc.3",
-    "@capacitor/storage": "^1.0.1",
-    "@types/jest": "^26.0.23",
-    "@vue/cli-plugin-unit-jest": "^4.5.12",
-    "axios": "^0.21.1",
-    "eslint-plugin-jest": "^24.3.6",
-    "ionicons": "^5.5.0",
-    "jest-junit": "^12.0.0",
-    "lodash": "^4.17.20",
-    "dart-sass": "^1.25.0",
-    "rxjs": "^6.6.7",
-    "sass-loader": "^12.3.0",
-    "vue": "^3.0.5",
-    "vue-router": "^4.0.3"
   },
   "devDependencies": {
-    "@types/node": "^12.19.15",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-eslint": "^4.5.10",
-    "@vue/cli-plugin-typescript": "^4.5.10",
-    "@vue/cli-service": "^4.5.10",
-    "@vue/compiler-sfc": "^3.0.5",
-    "@vue/eslint-config-typescript": "^5.0.2",
-    "@vue/test-utils": "^2.0.0-beta.14",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.4.1",
-    "typescript": "~3.9.3"
   }
 }
